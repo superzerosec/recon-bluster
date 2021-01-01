@@ -43,7 +43,7 @@ def subdomain_enum(args):
     recon = log.progress("Cleaning result")
     recon.status('In progress...')
     subprocess.call("sed 's/[A-Z]/\L&/g' {1} | sort -u > {0}; mv {0} {1}" .format(tmp_output, subdomains_output), shell=True)
-    subprocess.call("grep '@' {1} >> {2}; grep -vE '@|\*|cpanel\.|cpcalendars\.|cpcontacts\.|webmail\.|webdisk\.' {1} > {0}; mv {0} {1}" .format(tmp_output, subdomains_output, contacts_output), shell=True)
+    subprocess.call("grep '@' {1} >> {2}; grep -vE '@|\*|cpanel\.|cpcalendars\.|cpcontacts\.|webmail\.|webdisk\.' {1} > {0}; mv {0} {1}; sort -u {2} > {0}; mv {0} {2}" .format(tmp_output, subdomains_output, contacts_output), shell=True)
     #subprocess.call("grep '@' {1} >> {2}; grep -vE '@|\*' {1} > {0}; mv {0} {1}" .format(tmp_output, subdomains_output, contacts_output), shell=True)
     recon.success("Done")
 
