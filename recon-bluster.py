@@ -5,7 +5,7 @@ from pwn import *
 from termcolor import colored
 
 ## initialse
-version = 0.2
+version = 0.3
 subdomains_output = "subdomains.txt"
 new_subdomains_output = "subdomains_new.txt"
 intel_domains_output = "intel_domains.txt"
