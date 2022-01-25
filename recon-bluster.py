@@ -65,7 +65,7 @@ def urls_enum(domain, recon_log, domain_folder):
     
     ## hakrawler
     recon_log.status('URLs enumeration: Executing hakrawler...')
-    subprocess.call("cat {} | hakrawler -plain -usewayback | anew {} >> {}" .format(os.path.join(domain_folder, tmp_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, tmp_urls_output)), shell=True)
+    subprocess.call("cat {} | hakrawler | anew {} >> {}" .format(os.path.join(domain_folder, tmp_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, tmp_urls_output)), shell=True)
 
 def intel_domain_enum(domain, recon_log, domain_folder):
     
