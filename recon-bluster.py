@@ -168,7 +168,7 @@ if __name__ == "__main__":
             for domain in file:
                 domain = domain.rstrip()
                 t = Thread(target=recon, args=(domain,))
-                threads.append(x)
+                threads.append(t)
                 t.start()
             
             ## wait for all threads to complete
