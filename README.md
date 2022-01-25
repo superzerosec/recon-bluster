@@ -31,3 +31,25 @@ Recon multiple target on `list.txt`
 ```shell
 python3 recon-bluster.py -l list.txt
 ```
+# Tools Chaining
+## SQLMAP
+```shell
+TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; sqlmap -m $TARGET/target_sqli.txt --random-agent --batch
+```
+## NUCLEI
+```shell
+TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; nuclei -silent -l $TARGET/subdomains_urls.txt -o $TARGET/subdomains_nuclei_vulnerabilities.txt -H '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.4) Gecko/20061201 Firefox/2.0.0.4"' --severity low,medium,high,critical
+```
+# Credit
+* [assetfinder](https://github.com/tomnomnom/assetfinder)
+* [subfinder](https://github.com/projectdiscovery/subfinder)
+* [OWASP Amass](https://github.com/OWASP/Amass)
+* [httpx](https://github.com/projectdiscovery/httpx)
+* [waybackurls](https://github.com/tomnomnom/waybackurls)
+* [gf](https://github.com/tomnomnom/gf)
+* [anew](https://github.com/tomnomnom/anew)
+* [gau](https://github.com/lc/gau)
+* [hakrawler](https://github.com/hakluke/hakrawler)
+* [unew](https://github.com/dwisiswant0/unew)
+# Special Thanks
+* [KingOfBugBountyTips](https://github.com/KingOfBugbounty/KingOfBugBountyTips)
