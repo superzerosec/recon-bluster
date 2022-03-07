@@ -11,9 +11,8 @@ subdomains_output = "subdomains.txt"
 new_subdomains_output = "subdomains_new.txt"
 intel_domains_output = "intel_domains.txt"
 new_intel_domains_output = "intel_domains_new.txt"
-tmp_httpx_output = "tmp_httpx_output.txt"
-tmp_urls_output = "tmp_urls_output.txt"
-tmp_output = "tmp_output.txt"
+new_httpx_output = "subdomains_httpx_new.txt"
+new_urls_output = "subdomains_urls_new.txt"
 httpx_output = "subdomains_httpx.txt"
 urls_output = "subdomains_urls.txt"
 gf_sqli_output = "target_sqli.txt"
@@ -25,47 +24,41 @@ contacts_output = "contacts.txt"
 ## saving origin path
 orig_path = os.getcwd()
 
-def clean_result(recon_log, domain_folder):
-    
-    ## cleaning result
-    recon_log.status('Cleaning result...')
-    subprocess.call("rm {}/tmp*.txt" .format(domain_folder), shell=True)
-
 def generate_target_file(domain, recon_log, domain_folder):
     
     ## gf sqli
     recon_log.status('Generating target file: Executing gf sqli...')
-    subprocess.call("cat {} | gf sqli | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, tmp_urls_output), os.path.join(domain_folder, gf_sqli_output)), shell=True)
+    subprocess.call("cat {} | gf sqli | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_sqli_output)), shell=True)
 
     ## gf xss
     recon_log.status('Generating target file: Executing gf xxs...')
-    subprocess.call("cat {} | gf xss | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, tmp_urls_output), os.path.join(domain_folder, gf_xss_output)), shell=True)
+    subprocess.call("cat {} | gf xss | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_xss_output)), shell=True)
 
     ## gf ssrf
     recon_log.status('Generating target file: Executing gf ssrf...')
-    subprocess.call("cat {} | gf ssrf | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, tmp_urls_output), os.path.join(domain_folder, gf_ssrf_output)), shell=True)
+    subprocess.call("cat {} | gf ssrf | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_ssrf_output)), shell=True)
 
     ## gf upload-fields
     recon_log.status('Generating target file: Executing gf upload-fields...')
-    subprocess.call("cat {} | gf upload-fields | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, tmp_urls_output), os.path.join(domain_folder, gf_upload_fields_output)), shell=True)
+    subprocess.call("cat {} | gf upload-fields | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_upload_fields_output)), shell=True)
 
 def urls_enum(domain, recon_log, domain_folder):
     
     ## httpx
     recon_log.status('URLs enumeration: Executing httpx...')
-    subprocess.call("httpx -l {} -ports 80,443,8009,8080,8081,8090,8180,8443 -timeout 10 -threads 200 --follow-redirects -silent | anew {} > {}" .format(os.path.join(domain_folder, new_subdomains_output), os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, tmp_httpx_output)), shell=True)
+    subprocess.call("httpx -l {} -ports 80,443,8009,8080,8081,8090,8180,8443 -timeout 10 -threads 200 --follow-redirects -silent -json | jq -r .url | anew {} > {}" .format(os.path.join(domain_folder, new_subdomains_output), os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, new_httpx_output)), shell=True)
 
     ## waybackurls
     recon_log.status('URLs enumeration: Executing waybackurls...')
-    subprocess.call("cat {} | waybackurls | anew {} > {}" .format(os.path.join(domain_folder, tmp_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, tmp_urls_output)), shell=True)
+    subprocess.call("cat {} | waybackurls | anew {} > {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
 
     ## gau
-    recon_log.status('URLs enumeration: Executing gau...')
-    subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, tmp_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, tmp_urls_output)), shell=True)
+    #recon_log.status('URLs enumeration: Executing gau...')
+    #subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
     
     ## hakrawler
     recon_log.status('URLs enumeration: Executing hakrawler...')
-    subprocess.call("cat {} | hakrawler | anew {} >> {}" .format(os.path.join(domain_folder, tmp_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, tmp_urls_output)), shell=True)
+    subprocess.call("cat {} | hakrawler | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
 
 def intel_domain_enum(domain, recon_log, domain_folder):
     
@@ -88,8 +81,8 @@ def passive_subdomain_enum(domain, recon_log, domain_folder):
     subprocess.call("curl -s 'https://crt.sh/?q=%25.{}&output=json' | jq -r '.[].name_value' | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
     ## amass enum
-    recon_log.status('Passive subdomain enumeration: Executing amass enum...')
-    subprocess.call("amass enum -silent -passive -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
+    #recon_log.status('Passive subdomain enumeration: Executing amass enum...')
+    #subprocess.call("amass enum -silent -passive -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
     ## extracting contact
     subprocess.call("grep '@' {} | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, contacts_output)), shell=True)
@@ -117,16 +110,13 @@ def recon(domain):
         passive_subdomain_enum(domain, recon_log, domain_folder)
 
         ## intel enum
-        intel_domain_enum(domain, recon_log, domain_folder)
+        #intel_domain_enum(domain, recon_log, domain_folder)
 
         ## urls enum
         urls_enum(domain, recon_log, domain_folder)
 
         ## generating target file
         generate_target_file(domain, recon_log, domain_folder)
-    
-        ## result
-        clean_result(recon_log, domain_folder)
 
         ## progress done
         recon_log.success("Done")
