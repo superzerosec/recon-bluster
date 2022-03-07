@@ -53,8 +53,8 @@ def urls_enum(domain, recon_log, domain_folder):
     subprocess.call("cat {} | waybackurls | anew {} > {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
 
     ## gau
-    #recon_log.status('URLs enumeration: Executing gau...')
-    #subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
+    recon_log.status('URLs enumeration: Executing gau...')
+    subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
     
     ## hakrawler
     recon_log.status('URLs enumeration: Executing hakrawler...')
@@ -81,8 +81,8 @@ def passive_subdomain_enum(domain, recon_log, domain_folder):
     subprocess.call("curl -s 'https://crt.sh/?q=%25.{}&output=json' | jq -r '.[].name_value' | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
     ## amass enum
-    #recon_log.status('Passive subdomain enumeration: Executing amass enum...')
-    #subprocess.call("amass enum -silent -passive -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
+    recon_log.status('Passive subdomain enumeration: Executing amass enum...')
+    subprocess.call("amass enum -silent -passive -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
     ## extracting contact
     subprocess.call("grep '@' {} | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, contacts_output)), shell=True)
@@ -110,7 +110,7 @@ def recon(domain):
         passive_subdomain_enum(domain, recon_log, domain_folder)
 
         ## intel enum
-        #intel_domain_enum(domain, recon_log, domain_folder)
+        intel_domain_enum(domain, recon_log, domain_folder)
 
         ## urls enum
         urls_enum(domain, recon_log, domain_folder)
