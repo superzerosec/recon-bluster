@@ -70,6 +70,7 @@ export GOROOT=/usr/local/go
 export GOPATH=\$HOME/go
 export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH
 unalias gf
+unalias gau
 EOF
 fi
 
@@ -82,6 +83,7 @@ export GOROOT=/usr/local/go
 export GOPATH=\$HOME/go
 export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH
 unalias gf
+unalias gau
 EOF
 fi
 # printf "${yellow} Golang installed! Open a new terminal and run again this script ${reset}\n"

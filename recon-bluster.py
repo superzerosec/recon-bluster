@@ -20,6 +20,7 @@ gf_xss_output = "target_xss.txt"
 gf_ssrf_output = "target_ssrf.txt"
 gf_upload_fields_output = "target_upload_fields.txt"
 contacts_output = "contacts.txt"
+asn_output = "asn.txt"
 
 ## saving origin path
 orig_path = os.getcwd()
@@ -81,8 +82,11 @@ def passive_subdomain_enum(domain, recon_log, domain_folder):
     subprocess.call("curl -s 'https://crt.sh/?q=%25.{}&output=json' | jq -r '.[].name_value' | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
     ## amass enum
-    recon_log.status('Passive subdomain enumeration: Executing amass enum...')
-    subprocess.call("amass enum -silent -passive -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
+    #recon_log.status('Passive subdomain enumeration: Executing amass enum...')
+    #subprocess.call("amass enum -silent -passive -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
+
+    recon_log.status('Passive subdomain enumeration: Executing ASN enum...')
+    subprocess.call("amass enum -d {} 1> /dev/null 2> tmp.txt; grep -E 'Domain|ASN|Subdomain' tmp.txt | sed -e 's/[[:blank:]]*Subdomain Name(s)//g' -e 's/[[:blank:]]*[[:digit:]]*$//' -e 's/Domain: //' -e 's/ASN: /AS/' -e 's/^[[:blank:]]//' > {}" .format(domain, os.path.join(domain_folder, asn_output)), shell=True)
 
     ## extracting contact
     subprocess.call("grep '@' {} | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, contacts_output)), shell=True)
