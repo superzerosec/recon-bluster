@@ -15,6 +15,8 @@ new_httpx_output = "subdomains_httpx_new.txt"
 new_urls_output = "subdomains_urls_new.txt"
 httpx_output = "subdomains_httpx.txt"
 urls_output = "subdomains_urls.txt"
+url_httpx_output = "subdomains_urls_httpx.txt"
+new_url_httpx_output = "subdomains_urls_httpx_new.txt"
 gf_sqli_output = "target_sqli.txt"
 gf_xss_output = "target_xss.txt"
 gf_ssrf_output = "target_ssrf.txt"
@@ -28,25 +30,25 @@ def generate_target_file(domain, recon_log, domain_folder):
     
     ## gf sqli
     recon_log.status('Generating target file: Executing gf sqli...')
-    subprocess.call("cat {} | gf sqli | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_sqli_output)), shell=True)
+    subprocess.call("cat {} | gf sqli | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_url_httpx_output), os.path.join(domain_folder, gf_sqli_output)), shell=True)
 
     ## gf xss
     recon_log.status('Generating target file: Executing gf xxs...')
-    subprocess.call("cat {} | gf xss | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_xss_output)), shell=True)
+    subprocess.call("cat {} | gf xss | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_url_httpx_output), os.path.join(domain_folder, gf_xss_output)), shell=True)
 
     ## gf ssrf
     recon_log.status('Generating target file: Executing gf ssrf...')
-    subprocess.call("cat {} | gf ssrf | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_ssrf_output)), shell=True)
+    subprocess.call("cat {} | gf ssrf | unew -combine | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_url_httpx_output), os.path.join(domain_folder, gf_ssrf_output)), shell=True)
 
     ## gf upload-fields
     recon_log.status('Generating target file: Executing gf upload-fields...')
-    subprocess.call("cat {} | gf upload-fields | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, gf_upload_fields_output)), shell=True)
+    subprocess.call("cat {} | gf upload-fields | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, new_url_httpx_output), os.path.join(domain_folder, gf_upload_fields_output)), shell=True)
 
 def urls_enum(domain, recon_log, domain_folder):
     
     ## httpx
     recon_log.status('URLs enumeration: Executing httpx...')
-    subprocess.call("httpx -l {} -ports 80,443,8009,8080,8081,8090,8180,8443 -timeout 10 -threads 200 --follow-redirects -silent -json | jq -r .url | anew {} > {}" .format(os.path.join(domain_folder, new_subdomains_output), os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, new_httpx_output)), shell=True)
+    subprocess.call("httpx -l {} -ports 80,443,8009,8080,8081,8090,8180,8443 -timeout 10 -threads 200 -silent | anew {} > {}" .format(os.path.join(domain_folder, new_subdomains_output), os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, new_httpx_output)), shell=True)
 
     ## waybackurls
     recon_log.status('URLs enumeration: Executing waybackurls...')
@@ -59,6 +61,10 @@ def urls_enum(domain, recon_log, domain_folder):
     ## hakrawler
     recon_log.status('URLs enumeration: Executing hakrawler...')
     subprocess.call("cat {} | hakrawler | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
+
+    ## httpx with 200 code
+    recon_log.status('URLs enumeration: Executing httpx...')
+    subprocess.call("httpx -l {} -timeout 10 -threads 200 -silent -mc 200 | anew {} > {}" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, url_httpx_output), os.path.join(domain_folder, new_url_httpx_output)), shell=True)
 
 def intel_domain_enum(domain, recon_log, domain_folder):
     
