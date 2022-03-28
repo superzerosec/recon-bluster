@@ -113,6 +113,9 @@ eval go install -v github.com/hakluke/hakrawler@latest
 eval go install -v github.com/tomnomnom/anew@latest
 eval go install -v github.com/dwisiswant0/unew@latest
 eval go install -v github.com/tomnomnom/gf@latest
+eval go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
+eval go install -v github.com/tomnomnom/qsreplace@latest
+eval go install -v github.com/ferreiraklet/airixss@latest
 eval git clone https://github.com/1ndianl33t/Gf-Patterns $dir/Gf-Patterns
 eval git clone https://github.com/tomnomnom/gf $dir/gf
 cp $dir/gf/examples/* ~/.gf

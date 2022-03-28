@@ -63,7 +63,7 @@ def urls_enum(domain, recon_log, domain_folder):
     subprocess.call("cat {} | hakrawler | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
 
     ## httpx with 200 code
-    recon_log.status('URLs enumeration: Executing httpx...')
+    recon_log.status('URLs enumeration: Executing urls httpx...')
     subprocess.call("httpx -l {} -timeout 10 -threads 200 -silent -mc 200 | anew {} > {}" .format(os.path.join(domain_folder, new_urls_output), os.path.join(domain_folder, url_httpx_output), os.path.join(domain_folder, new_url_httpx_output)), shell=True)
 
 def intel_domain_enum(domain, recon_log, domain_folder):
