@@ -1,5 +1,5 @@
 # Summary
-recon-bluster is a automated recon tools based on target domain. Combining a set of the best recon tools to enumeration endpoint and generate a target endpoint for further vulnerability scanning.
+recon-bluster is a automated recon tools based on target domain. Combining a set of the best recon tools to enumeration endpoint and generate a target endpoint for further vulnerability scanning. Capable to perform multi-threading for concurrent target recon.
 # Recon Workflow
 ![Alt text](images/xmind.png "recon workflow")
 # Installation

@@ -3,12 +3,14 @@
 import subprocess, os, argparse, sys
 from pwn import *
 from termcolor import colored
-from threading import Thread
+import concurrent.futures
 
 ## initialse
 version = 0.4
 subdomains_output = "subdomains.txt"
 new_subdomains_output = "subdomains_new.txt"
+subdomains_dnsx_output = "subdomains_dnsx.txt"
+new_subdomains_dnsx_output = "subdomains_dnsx_new.txt"
 intel_domains_output = "intel_domains.txt"
 new_intel_domains_output = "intel_domains_new.txt"
 new_httpx_output = "subdomains_httpx_new.txt"
@@ -48,19 +50,19 @@ def urls_enum(domain, recon_log, domain_folder):
     
     ## httpx
     recon_log.status('URLs enumeration: Executing httpx...')
-    subprocess.call("httpx -l {} -ports 80,443,8009,8080,8081,8090,8180,8443 -timeout 10 -threads 200 -silent | anew {} > {}" .format(os.path.join(domain_folder, new_subdomains_output), os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, new_httpx_output)), shell=True)
+    subprocess.call("httpx -l {} -ports 80,443,8009,8080,8081,8090,8180,8443 -timeout 10 -threads 200 -silent | anew {} > {}" .format(os.path.join(domain_folder, subdomains_dnsx_output), os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, new_httpx_output)), shell=True)
 
     ## waybackurls
     recon_log.status('URLs enumeration: Executing waybackurls...')
-    subprocess.call("cat {} | waybackurls | anew {} > {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
+    subprocess.call("cat {} | waybackurls | anew {} > {}" .format(os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
 
     ## gau
     recon_log.status('URLs enumeration: Executing gau...')
-    subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
+    subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
     
     ## hakrawler
     recon_log.status('URLs enumeration: Executing hakrawler...')
-    subprocess.call("cat {} | hakrawler | anew {} >> {}" .format(os.path.join(domain_folder, new_httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
+    subprocess.call("cat {} | hakrawler | anew {} >> {}" .format(os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
 
     ## httpx with 200 code
     recon_log.status('URLs enumeration: Executing urls httpx...')
@@ -80,7 +82,7 @@ def passive_subdomain_enum(domain, recon_log, domain_folder):
 
     ## subfinder
     recon_log.status('Passive subdomain enumeration: Executing subfinder...')
-    subprocess.call("subfinder -silent -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
+    subprocess.call("subfinder -silent -all -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
     ## crt.sh
     recon_log.status('Passive subdomain enumeration: Executing crt.sh...')
@@ -89,6 +91,10 @@ def passive_subdomain_enum(domain, recon_log, domain_folder):
     ## amass enum
     recon_log.status('Passive subdomain enumeration: Executing amass enum...')
     subprocess.call("amass enum -silent -passive -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
+
+    ## dnsx
+    recon_log.status('Passive subdomain enumeration: Executing dnsx...')
+    subprocess.call("dnsx -silent -l {} | anew {} >> {}" .format(os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, subdomains_dnsx_output), os.path.join(domain_folder, new_subdomains_dnsx_output)), shell=True)
 
     ## extracting contact
     subprocess.call("grep '@' {} | anew {} >/dev/null 2>&1" .format(os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, contacts_output)), shell=True)
@@ -144,6 +150,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--domain", action="store", help="Target domain", default=False)
     parser.add_argument("-l", "--list", action="store", help="List of target domain saperated with new line", default=False)
+    parser.add_argument("-t", "--thread", action="store", type=int, help="Number of thread, default 5", default=5)
     args = parser.parse_args()
     
     if args.domain is not False:
@@ -154,22 +161,13 @@ if __name__ == "__main__":
 
     elif args.list is not False:
         
-        ## initialise threads list
-        threads = list()
-
-        ## multiple target domain
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=args.thread)
+        
         with open(args.list) as file:
-
-            ## create multi-threaded
-            for domain in file:
-                domain = domain.rstrip()
-                t = Thread(target=recon, args=(domain,))
-                threads.append(t)
-                t.start()
             
-            ## wait for all threads to complete
-            for t in threads:
-                t.join()
+            for domain in file:
+                domains = domain.rstrip("\n\r")
+                executor.submit(recon, domains)
 
     else:
 
