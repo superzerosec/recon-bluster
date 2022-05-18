@@ -101,7 +101,7 @@ def passive_subdomain_enum(domain, recon_log, domain_folder):
     subprocess.call("sed -i -r '/@|\*|cpanel\.|cpcalendars\.|cpcontacts\.|webmail\.|webdisk\./d' {}" .format(os.path.join(domain_folder, subdomains_output)), shell=True)
     subprocess.call("sed -i -r '/@|\*|cpanel\.|cpcalendars\.|cpcontacts\.|webmail\.|webdisk\./d' {}" .format(os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
-def recon(domain):
+def recon(domain, intel):
 
     try:
         
@@ -121,8 +121,9 @@ def recon(domain):
         ## passive enum
         passive_subdomain_enum(domain, recon_log, domain_folder)
 
-        ## intel enum
-        intel_domain_enum(domain, recon_log, domain_folder)
+        if intel is not False:
+            ## intel enum
+            intel_domain_enum(domain, recon_log, domain_folder)
 
         ## urls enum
         urls_enum(domain, recon_log, domain_folder)
@@ -151,23 +152,26 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--domain", action="store", help="Target domain", default=False)
     parser.add_argument("-l", "--list", action="store", help="List of target domain saperated with new line", default=False)
     parser.add_argument("-t", "--thread", action="store", type=int, help="Number of thread, default 5", default=5)
+    parser.add_argument("-i", "--intel", action="store", help="Amass intel recon, default False", default=False)
     args = parser.parse_args()
     
     if args.domain is not False:
         
         ## single target domain
         domain = args.domain
-        recon(domain)
+        intel = args.intel
+        recon(domain, intel)
 
     elif args.list is not False:
         
+        intel = args.intel
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=args.thread)
         
         with open(args.list) as file:
             
             for domain in file:
                 domains = domain.rstrip("\n\r")
-                executor.submit(recon, domains)
+                executor.submit(recon, domains, intel)
 
     else:
 
