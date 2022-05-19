@@ -152,7 +152,7 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--domain", action="store", help="Target domain", default=False)
     parser.add_argument("-l", "--list", action="store", help="List of target domain saperated with new line", default=False)
     parser.add_argument("-t", "--thread", action="store", type=int, help="Number of thread, default 5", default=5)
-    parser.add_argument("-i", "--intel", action="store", help="Amass intel recon, default False", default=False)
+    parser.add_argument("-i", "--intel", action="store_true", help="Amass intel recon, default False")
     args = parser.parse_args()
     
     if args.domain is not False:
