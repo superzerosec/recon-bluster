@@ -10,13 +10,16 @@ bash install.sh
 ```
 # Usage
 ```shell
-usage: recon-bluster.py [-h] [-d DOMAIN] [-l LIST]
+usage: recon-bluster.py [-h] [-d DOMAIN] [-l LIST] [-t THREAD] [-i]
 
 optional arguments:
   -h, --help            show this help message and exit
   -d DOMAIN, --domain DOMAIN
                         Target domain
   -l LIST, --list LIST  List of target domain saperated with new line
+  -t THREAD, --thread THREAD
+                        Number of thread, default 5
+  -i, --intel           Amass intel recon, default False
 ```
 
 Recon single target on `tesla.com`
@@ -40,7 +43,7 @@ TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; sqlmap -m $TARGET/target_
 ```
 ## NUCLEI
 ```shell
-TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; nuclei -silent -l $TARGET/subdomains_urls_httpx.txt -json -o $TARGET/subdomains_nuclei_vulnerabilities_$(date +%Y-%m-%d_%H:%M:%S).txt -H '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.4) Gecko/20061201 Firefox/2.0.0.4"' --severity low,medium,high,critical
+TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; nuclei -silent -l $TARGET/subdomains_urls_httpx.txt -json -o $TARGET/subdomains_nuclei_vulnerabilities_$(date +%Y-%m-%d_%H:%M:%S).txt -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36" --severity low,medium,high,critical
 ```
 ## AIRIXSS
 ```shell
@@ -51,17 +54,24 @@ TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; cat $TARGET/target_xss.tx
 TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; smap -iL $TARGET/subdomains.txt -oG $TARGET/subdomains_smap.txt
 ```
 # Credit
+* [waybackurls](https://github.com/tomnomnom/waybackurls)
 * [assetfinder](https://github.com/tomnomnom/assetfinder)
+* [anew](https://github.com/tomnomnom/anew)
+* [gf](https://github.com/tomnomnom/gf)
+* [qsreplace](https://github.com/tomnomnom/qsreplace)
+* [dnsx](https://github.com/projectdiscovery/dnsx)
+* [httpx](https://github.com/projectdiscovery/httpx)
 * [subfinder](https://github.com/projectdiscovery/subfinder)
 * [OWASP Amass](https://github.com/OWASP/Amass)
-* [httpx](https://github.com/projectdiscovery/httpx)
-* [waybackurls](https://github.com/tomnomnom/waybackurls)
-* [gf](https://github.com/tomnomnom/gf)
-* [anew](https://github.com/tomnomnom/anew)
 * [gau](https://github.com/lc/gau)
 * [hakrawler](https://github.com/hakluke/hakrawler)
 * [unew](https://github.com/dwisiswant0/unew)
-* [qsreplace](https://github.com/tomnomnom/qsreplace)
+* [sqlmap](https://github.com/sqlmapproject/sqlmap)
+* [nuclei](https://github.com/projectdiscovery/nuclei)
+* [airixss](https://github.com/ferreiraklet/airixss)
 * [smap](https://github.com/s0md3v/Smap)
+* [uncover](https://github.com/projectdiscovery/uncover)
+* [tlsx](https://github.com/projectdiscovery/tlsx)
+* [waymore](https://github.com/xnl-h4ck3r/waymore)
 # Special Thanks
 * [KingOfBugBountyTips](https://github.com/KingOfBugbounty/KingOfBugBountyTips)
