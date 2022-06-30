@@ -53,6 +53,10 @@ TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; cat $TARGET/target_xss.tx
 ```shell
 TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; smap -iL $TARGET/subdomains.txt -oG $TARGET/subdomains_smap.txt
 ```
+## WAYMORE
+```shell
+TARGET=tesla.com; python3 ~/tools/waymore/waymore.py -mode U -i $TARGET; cat ~/tools/waymore/results/$TARGET/waymore.txt | anew subdomains_urls.txt > subdomains_urls_new.txt
+```
 # Credit
 * [waybackurls](https://github.com/tomnomnom/waybackurls)
 * [assetfinder](https://github.com/tomnomnom/assetfinder)

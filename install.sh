@@ -101,7 +101,7 @@ printf "${bgreen}System env ready${reset}\n\n"
 DIR=~/tools
 
 eval pip3 install -r requirements.txt
-printf "${bgreen}Requirements installed\n\nTools installation begins\n${reset}"
+printf "${bgreen}\nRequirements installed\n\nTools installation begins${reset}\n\n"
 
 eval go install -v github.com/tomnomnom/waybackurls@latest
 eval go install -v github.com/tomnomnom/assetfinder@latest
