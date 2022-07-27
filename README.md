@@ -43,7 +43,7 @@ TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; sqlmap -m $TARGET/target_
 ```
 ## NUCLEI
 ```shell
-TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; nuclei -silent -l $TARGET/subdomains_urls_httpx.txt -json -o $TARGET/subdomains_nuclei_vulnerabilities_$(date +%Y-%m-%d_%H:%M:%S).txt -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36" --severity low,medium,high,critical
+TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; nuclei -silent -l $TARGET/subdomains_httpx.txt -json -o $TARGET/subdomains_nuclei_vulnerabilities_$(date +%Y-%m-%d_%H:%M:%S).txt -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36" --severity low,medium,high,critical
 ```
 ## AIRIXSS
 ```shell
@@ -55,7 +55,7 @@ TARGET=tesla.com; python3 recon-bluster.py -d $TARGET; smap -iL $TARGET/subdomai
 ```
 ## WAYMORE
 ```shell
-TARGET=tesla.com; python3 ~/tools/waymore/waymore.py -mode U -i $TARGET; cat ~/tools/waymore/results/$TARGET/waymore.txt | anew subdomains_urls.txt > subdomains_urls_new.txt
+TARGET=tesla.com; python3 ~/tools/waymore/waymore.py -mode U -i $TARGET; cat ~/tools/waymore/results/$TARGET/waymore.txt | anew $TARGET/subdomains_urls_waymore.txt > $TARGET/subdomains_urls_waymore_new.txt
 ```
 # Credit
 * [waybackurls](https://github.com/tomnomnom/waybackurls)
