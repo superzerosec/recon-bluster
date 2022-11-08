@@ -114,6 +114,7 @@ eval go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 eval go install -v github.com/projectdiscovery/uncover/cmd/uncover@latest
 eval go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
 eval go install -v github.com/projectdiscovery/tlsx/cmd/tlsx@latest
+eval go install -v github.com/projectdiscovery/katana/cmd/katana@latest
 eval go install -v github.com/OWASP/Amass/v3/...@master
 eval go install -v github.com/lc/gau/v2/cmd/gau@latest
 eval go install -v github.com/hakluke/hakrawler@latest

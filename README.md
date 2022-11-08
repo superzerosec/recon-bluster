@@ -76,6 +76,7 @@ TARGET=tesla.com; python3 ~/tools/waymore/waymore.py -mode U -i $TARGET; cat ~/t
 * [smap](https://github.com/s0md3v/Smap)
 * [uncover](https://github.com/projectdiscovery/uncover)
 * [tlsx](https://github.com/projectdiscovery/tlsx)
+* [katana](https://github.com/projectdiscovery/katana)
 * [waymore](https://github.com/xnl-h4ck3r/waymore)
 # Special Thanks
 * [KingOfBugBountyTips](https://github.com/KingOfBugbounty/KingOfBugBountyTips)
