@@ -57,8 +57,8 @@ def urls_enum(domain, recon_log, domain_folder):
     subprocess.call("cat {} | waybackurls | anew {} > {}" .format(os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
 
     ## gau
-    recon_log.status('URLs enumeration: Executing gau...')
-    subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
+    # recon_log.status('URLs enumeration: Executing gau...')
+    # subprocess.call("cat {} | gau | anew {} >> {}" .format(os.path.join(domain_folder, httpx_output), os.path.join(domain_folder, urls_output), os.path.join(domain_folder, new_urls_output)), shell=True)
     
     ## hakrawler
     recon_log.status('URLs enumeration: Executing hakrawler...')
@@ -82,7 +82,7 @@ def passive_subdomain_enum(domain, recon_log, domain_folder):
 
     ## subfinder
     recon_log.status('Passive subdomain enumeration: Executing subfinder...')
-    subprocess.call("subfinder -silent -all -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
+    subprocess.call("subfinder -silent -duc -d {} | anew {} >> {}" .format(domain, os.path.join(domain_folder, subdomains_output), os.path.join(domain_folder, new_subdomains_output)), shell=True)
 
     ## crt.sh
     recon_log.status('Passive subdomain enumeration: Executing crt.sh...')
