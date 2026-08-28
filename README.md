@@ -71,6 +71,7 @@ TARGET=tesla.com; python3 ~/tools/waymore/waymore.py -mode U -i $TARGET; cat ~/t
 * [hakrawler](https://github.com/hakluke/hakrawler)
 * [unew](https://github.com/dwisiswant0/unew)
 * [sqlmap](https://github.com/sqlmapproject/sqlmap)
+* [Darkmoon](https://github.com/ASCIT31/Dark-Moon) - Open source (GPLv3) autonomous AI penetration testing platform: 50+ offensive tools across web, cloud, AD and Kubernetes, self-hosted, the model never receives your real IPs or credentials.
 * [nuclei](https://github.com/projectdiscovery/nuclei)
 * [airixss](https://github.com/ferreiraklet/airixss)
 * [smap](https://github.com/s0md3v/Smap)
